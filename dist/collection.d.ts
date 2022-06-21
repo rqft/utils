@@ -1,0 +1,35 @@
+import { Perm } from "./permissions";
+export declare type Predicate<T, K, V, R> = (value: V, key: K, obj: T) => R;
+export declare class Collection<K extends string | number | symbol, V> {
+    private raw;
+    private permissions;
+    constructor(iterable?: Iterable<[K, V]>, permissions?: Partial<Perm>);
+    get size(): number;
+    has(key: K): boolean;
+    hasSome(keys: Iterable<K>): boolean;
+    hasEvery(keys: Iterable<K>): boolean;
+    get(key: K): V;
+    getMany<U extends K = K>(keys: Iterable<U>): Collection<U, V>;
+    set(key: K, value: V): this;
+    setManyTo(keys: Iterable<K>, value: V): Collection<K, V>;
+    setMany(entries: Iterable<[K, V]>): Collection<K, V>;
+    delete(key: K): this;
+    deleteMany(keys: Iterable<K>): this;
+    clear(): this;
+    forEach(callback: Predicate<this, K, V, void>): this;
+    map<R = V>(callback: Predicate<this, K, V, R>): Collection<K, R>;
+    filter<S extends V>(callback: (value: V, key: K, obj: this) => value is S): Collection<K, S>;
+    find(callback: Predicate<this, K, V, boolean>): V | undefined;
+    findKey(callback: Predicate<this, K, V, boolean>): K | undefined;
+    intersection(other: Collection<K, V>): Collection<K, V>;
+    union(other: Collection<K, V>): void;
+    difference(other: Collection<K, V>): Collection<K, V>;
+    some(callback: Predicate<this, K, V, boolean>): boolean;
+    every(callback: Predicate<this, K, V, boolean>): boolean;
+    entries(): IterableIterator<[K, V]>;
+    keys(): IterableIterator<K>;
+    values(): IterableIterator<V>;
+    clone(): Collection<K, V>;
+    [Symbol.iterator](): IterableIterator<[K, V]>;
+    get [Symbol.toStringTag](): string;
+}
