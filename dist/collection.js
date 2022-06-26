@@ -1,8 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Collection = void 0;
+exports.BaseCollection = void 0;
 const permissions_1 = require("./permissions");
-class Collection {
+class BaseCollection {
     raw = {};
     permissions;
     constructor(iterable, permissions) {
@@ -45,7 +45,7 @@ class Collection {
     }
     getMany(keys) {
         this.permissions.check("read");
-        const output = new Collection([], this.permissions.clone().data());
+        const output = new BaseCollection([], this.permissions.clone().data());
         for (const key of keys) {
             if (this.has(key)) {
                 output.raw[key] = this.raw[key];
@@ -98,7 +98,7 @@ class Collection {
     }
     map(callback) {
         this.permissions.check("read");
-        const output = new Collection([], this.permissions.clone().data());
+        const output = new BaseCollection([], this.permissions.clone().data());
         for (const [key, value] of this.entries()) {
             output.permissions.check("write");
             output.set(key, callback(value, key, this));
@@ -107,7 +107,7 @@ class Collection {
     }
     filter(callback) {
         this.permissions.check("read");
-        const output = new Collection([], this.permissions.clone().data());
+        const output = new BaseCollection([], this.permissions.clone().data());
         for (const [key, value] of this.entries()) {
             if (callback(value, key, this)) {
                 output.permissions.check("write");
@@ -137,7 +137,7 @@ class Collection {
     intersection(other) {
         this.permissions.check("read");
         other.permissions.check("read");
-        const output = new Collection([], this.permissions.clone().data());
+        const output = new BaseCollection([], this.permissions.clone().data());
         for (const [key, value] of this.entries()) {
             if (other.has(key)) {
                 output.permissions.check("write");
@@ -149,7 +149,7 @@ class Collection {
     union(other) {
         this.permissions.check("read");
         other.permissions.check("read");
-        const output = new Collection([], this.permissions.clone().data());
+        const output = new BaseCollection([], this.permissions.clone().data());
         for (const [key, value] of this.entries()) {
             output.permissions.check("write");
             output.set(key, value);
@@ -158,7 +158,7 @@ class Collection {
     difference(other) {
         this.permissions.check("read");
         other.permissions.check("read");
-        const output = new Collection([], this.permissions.clone().data());
+        const output = new BaseCollection([], this.permissions.clone().data());
         for (const [key, value] of this.entries()) {
             if (!other.has(key)) {
                 output.permissions.check("write");
@@ -205,7 +205,7 @@ class Collection {
     }
     clone() {
         this.permissions.check("read");
-        return new Collection(this.entries(), this.permissions.clone().data());
+        return new BaseCollection(this.entries(), this.permissions.clone().data());
     }
     [Symbol.iterator]() {
         return this.entries();
@@ -221,4 +221,4 @@ class Collection {
         return JSON.stringify(this.toJSON());
     }
 }
-exports.Collection = Collection;
+exports.BaseCollection = BaseCollection;

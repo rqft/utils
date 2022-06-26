@@ -2,7 +2,7 @@ import { Perm, Permissions } from "./permissions";
 
 export type Predicate<T, K, V, R> = (value: V, key: K, obj: T) => R;
 
-export class Collection<K extends string | number | symbol, V> {
+export class BaseCollection<K extends string | number | symbol, V> {
   private raw = {} as Record<K, V>;
   private permissions: Permissions;
   constructor(iterable?: Iterable<[K, V]>, permissions?: Partial<Perm>) {
@@ -50,9 +50,12 @@ export class Collection<K extends string | number | symbol, V> {
     return this.raw[key];
   }
 
-  public getMany<U extends K = K>(keys: Iterable<U>): Collection<U, V> {
+  public getMany<U extends K = K>(keys: Iterable<U>): BaseCollection<U, V> {
     this.permissions.check("read");
-    const output = new Collection<U, V>([], this.permissions.clone().data());
+    const output = new BaseCollection<U, V>(
+      [],
+      this.permissions.clone().data()
+    );
 
     for (const key of keys) {
       if (this.has(key)) {
@@ -69,7 +72,7 @@ export class Collection<K extends string | number | symbol, V> {
     return this;
   }
 
-  public setManyTo(keys: Iterable<K>, value: V): Collection<K, V> {
+  public setManyTo(keys: Iterable<K>, value: V): BaseCollection<K, V> {
     this.permissions.check("write");
     for (const key of keys) {
       this.set(key, value);
@@ -77,7 +80,7 @@ export class Collection<K extends string | number | symbol, V> {
     return this;
   }
 
-  public setMany(entries: Iterable<[K, V]>): Collection<K, V> {
+  public setMany(entries: Iterable<[K, V]>): BaseCollection<K, V> {
     this.permissions.check("write");
     for (const [key, value] of entries) {
       this.set(key, value);
@@ -113,9 +116,12 @@ export class Collection<K extends string | number | symbol, V> {
     return this;
   }
 
-  public map<R = V>(callback: Predicate<this, K, V, R>): Collection<K, R> {
+  public map<R = V>(callback: Predicate<this, K, V, R>): BaseCollection<K, R> {
     this.permissions.check("read");
-    const output = new Collection<K, R>([], this.permissions.clone().data());
+    const output = new BaseCollection<K, R>(
+      [],
+      this.permissions.clone().data()
+    );
 
     for (const [key, value] of this.entries()) {
       output.permissions.check("write");
@@ -127,15 +133,15 @@ export class Collection<K extends string | number | symbol, V> {
 
   public filter<S extends V>(
     callback: (value: V, key: K, obj: this) => value is S
-  ): Collection<K, S>;
+  ): BaseCollection<K, S>;
   public filter(
     callback: Predicate<this, K, V, boolean>
-  ): Collection<K, V | undefined>;
+  ): BaseCollection<K, V | undefined>;
   public filter(
     callback: Predicate<this, K, V, boolean>
-  ): Collection<K, V | undefined> {
+  ): BaseCollection<K, V | undefined> {
     this.permissions.check("read");
-    const output = new Collection<K, V | undefined>(
+    const output = new BaseCollection<K, V | undefined>(
       [],
       this.permissions.clone().data()
     );
@@ -170,10 +176,13 @@ export class Collection<K extends string | number | symbol, V> {
     return undefined;
   }
 
-  public intersection(other: Collection<K, V>) {
+  public intersection(other: BaseCollection<K, V>) {
     this.permissions.check("read");
     other.permissions.check("read");
-    const output = new Collection<K, V>([], this.permissions.clone().data());
+    const output = new BaseCollection<K, V>(
+      [],
+      this.permissions.clone().data()
+    );
 
     for (const [key, value] of this.entries()) {
       if (other.has(key)) {
@@ -185,10 +194,13 @@ export class Collection<K extends string | number | symbol, V> {
     return output;
   }
 
-  public union(other: Collection<K, V>) {
+  public union(other: BaseCollection<K, V>) {
     this.permissions.check("read");
     other.permissions.check("read");
-    const output = new Collection<K, V>([], this.permissions.clone().data());
+    const output = new BaseCollection<K, V>(
+      [],
+      this.permissions.clone().data()
+    );
 
     for (const [key, value] of this.entries()) {
       output.permissions.check("write");
@@ -196,10 +208,13 @@ export class Collection<K extends string | number | symbol, V> {
     }
   }
 
-  public difference(other: Collection<K, V>) {
+  public difference(other: BaseCollection<K, V>) {
     this.permissions.check("read");
     other.permissions.check("read");
-    const output = new Collection<K, V>([], this.permissions.clone().data());
+    const output = new BaseCollection<K, V>(
+      [],
+      this.permissions.clone().data()
+    );
 
     for (const [key, value] of this.entries()) {
       if (!other.has(key)) {
@@ -255,9 +270,9 @@ export class Collection<K extends string | number | symbol, V> {
     }
   }
 
-  public clone(): Collection<K, V> {
+  public clone(): BaseCollection<K, V> {
     this.permissions.check("read");
-    return new Collection(this.entries(), this.permissions.clone().data());
+    return new BaseCollection(this.entries(), this.permissions.clone().data());
   }
 
   public [Symbol.iterator]() {
