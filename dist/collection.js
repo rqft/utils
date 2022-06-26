@@ -204,6 +204,7 @@ class Collection {
         }
     }
     clone() {
+        this.permissions.check("read");
         return new Collection(this.entries(), this.permissions.clone().data());
     }
     [Symbol.iterator]() {
@@ -211,6 +212,13 @@ class Collection {
     }
     get [Symbol.toStringTag]() {
         return `${this.constructor.name} (${this.size} items)`;
+    }
+    toJSON() {
+        this.permissions.check("read");
+        return this.raw;
+    }
+    toString() {
+        return JSON.stringify(this.toJSON());
     }
 }
 exports.Collection = Collection;

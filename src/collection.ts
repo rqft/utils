@@ -130,6 +130,9 @@ export class Collection<K extends string | number | symbol, V> {
   ): Collection<K, S>;
   public filter(
     callback: Predicate<this, K, V, boolean>
+  ): Collection<K, V | undefined>;
+  public filter(
+    callback: Predicate<this, K, V, boolean>
   ): Collection<K, V | undefined> {
     this.permissions.check("read");
     const output = new Collection<K, V | undefined>(
@@ -253,6 +256,7 @@ export class Collection<K extends string | number | symbol, V> {
   }
 
   public clone(): Collection<K, V> {
+    this.permissions.check("read");
     return new Collection(this.entries(), this.permissions.clone().data());
   }
 
@@ -262,5 +266,14 @@ export class Collection<K extends string | number | symbol, V> {
 
   public get [Symbol.toStringTag]() {
     return `${this.constructor.name} (${this.size} items)`;
+  }
+
+  public toJSON(): Record<K, V> {
+    this.permissions.check("read");
+    return this.raw;
+  }
+
+  public toString() {
+    return JSON.stringify(this.toJSON());
   }
 }

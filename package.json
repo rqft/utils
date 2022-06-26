@@ -1,5 +1,5 @@
 {
-  "name": "julian",
+  "name": "julian-utils",
   "version": "1.0.0",
   "description": "utils",
   "main": "dist/index.js",

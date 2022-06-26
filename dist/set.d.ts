@@ -20,9 +20,12 @@ export declare class BaseSet<T> {
     map<R = T>(callback: Predicate<this, T, R>): BaseSet<R>;
     some(callback: Predicate<this, T, boolean>): boolean;
     every(callback: Predicate<this, T, boolean>): boolean;
+    clone(): BaseSet<T>;
     entries(): IterableIterator<[T, T]>;
     keys(): IterableIterator<T>;
     values(): IterableIterator<T>;
     [Symbol.iterator](): IterableIterator<T>;
     get [Symbol.toStringTag](): string;
+    toJSON(): Array<T>;
+    toString(): string;
 }

@@ -19,6 +19,7 @@ export declare class Collection<K extends string | number | symbol, V> {
     forEach(callback: Predicate<this, K, V, void>): this;
     map<R = V>(callback: Predicate<this, K, V, R>): Collection<K, R>;
     filter<S extends V>(callback: (value: V, key: K, obj: this) => value is S): Collection<K, S>;
+    filter(callback: Predicate<this, K, V, boolean>): Collection<K, V | undefined>;
     find(callback: Predicate<this, K, V, boolean>): V | undefined;
     findKey(callback: Predicate<this, K, V, boolean>): K | undefined;
     intersection(other: Collection<K, V>): Collection<K, V>;
@@ -32,4 +33,6 @@ export declare class Collection<K extends string | number | symbol, V> {
     clone(): Collection<K, V>;
     [Symbol.iterator](): IterableIterator<[K, V]>;
     get [Symbol.toStringTag](): string;
+    toJSON(): Record<K, V>;
+    toString(): string;
 }

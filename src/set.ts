@@ -147,6 +147,11 @@ export class BaseSet<T> {
     return true;
   }
 
+  public clone(): BaseSet<T> {
+    this.permissions.check("read");
+    return new BaseSet<T>(this.raw, this.permissions.clone().data());
+  }
+
   public *entries(): IterableIterator<[T, T]> {
     this.permissions.check("read");
 
@@ -178,5 +183,15 @@ export class BaseSet<T> {
 
   public get [Symbol.toStringTag]() {
     return `${this.constructor.name} (${this.size} items)`;
+  }
+
+  public toJSON(): Array<T> {
+    this.permissions.check("read");
+    return this.raw;
+  }
+
+  public toString(): string {
+    this.permissions.check("read");
+    return JSON.stringify(this.toJSON());
   }
 }

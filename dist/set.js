@@ -116,6 +116,10 @@ class BaseSet {
         }
         return true;
     }
+    clone() {
+        this.permissions.check("read");
+        return new BaseSet(this.raw, this.permissions.clone().data());
+    }
     *entries() {
         this.permissions.check("read");
         for (const value of this.raw) {
@@ -140,6 +144,14 @@ class BaseSet {
     }
     get [Symbol.toStringTag]() {
         return `${this.constructor.name} (${this.size} items)`;
+    }
+    toJSON() {
+        this.permissions.check("read");
+        return this.raw;
+    }
+    toString() {
+        this.permissions.check("read");
+        return JSON.stringify(this.toJSON());
     }
 }
 exports.BaseSet = BaseSet;
