@@ -1,4 +1,4 @@
-import { Perm } from "./permissions";
+import type { Perm } from './permissions';
 export declare type Predicate<T, V, R> = (value: V, obj: T) => R;
 export declare class BaseSet<T> {
     private raw;

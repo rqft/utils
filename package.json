@@ -16,5 +16,12 @@
   "bugs": {
     "url": "https://github.com/rqft/Julian/issues"
   },
-  "homepage": "https://github.com/rqft/Julian#readme"
+  "homepage": "https://github.com/rqft/Julian#readme",
+  "devDependencies": {
+    "@types/node": "^18.11.3",
+    "@typescript-eslint/eslint-plugin": "^5.26.0",
+    "@typescript-eslint/parser": "^5.26.0",
+    "eslint": "^8.16.0",
+    "prettier": "^2.5.0"
+  }
 }

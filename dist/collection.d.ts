@@ -1,6 +1,6 @@
-import { Perm } from "./permissions";
+import type { Perm } from './permissions';
 export declare type Predicate<T, K, V, R> = (value: V, key: K, obj: T) => R;
-export declare class BaseCollection<K extends string | number | symbol, V> {
+export declare class BaseCollection<K extends number | string | symbol, V> {
     private raw;
     private permissions;
     constructor(iterable?: Iterable<[K, V]>, permissions?: Partial<Perm>);

@@ -1,4 +1,4 @@
-import { Bits } from "./bits";
+import { Bits } from './bits';
 
 export interface Perm {
   read: boolean;

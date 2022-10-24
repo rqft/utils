@@ -34,7 +34,7 @@ class Bits {
             case false:
                 return this.disable(key);
             default:
-                throw new Error("Invalid value");
+                throw new Error('Invalid value');
         }
     }
     get(key) {
@@ -92,7 +92,7 @@ class Bits {
         return output;
     }
     static unload(value, keys) {
-        let output = {};
+        const output = {};
         for (let index = 0; index < keys.length; index++) {
             const key = keys[index];
             const bit = 1 << index;
@@ -107,4 +107,4 @@ const obj = {
     b: false,
 };
 const bits = new Bits(obj);
-bits.clone().enable("b").set("a", false).data().a;
+bits.clone().enable('b').set('a', false).data().a;

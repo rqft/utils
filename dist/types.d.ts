@@ -6,4 +6,4 @@ export declare type Not<T extends boolean> = T extends true ? false : true;
 export declare type Set<T extends Record<Key, boolean>, K extends keyof T, V> = Override<T, {
     [P in K]: V;
 }>;
-export declare type Key = string | number | symbol;
+export declare type Key = number | string | symbol;

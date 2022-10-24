@@ -1,10 +1,11 @@
-import { Flood, Not, Set } from "./types";
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+import type { Flood, Not, Set } from './types';
 
 export type Bit = 0 | 1;
 
 export class Bits<
   T extends Record<K, boolean>,
-  K extends string | number | symbol = keyof T
+  K extends number | string | symbol = keyof T
 > {
   private static: typeof Bits = Bits;
   private raw: number;
@@ -47,12 +48,12 @@ export class Bits<
     // @ts-ignore
   ): Bits<Set<T, U, V>, K> {
     switch (value) {
-      case true:
-        return this.enable(key) as never;
-      case false:
-        return this.disable(key) as never;
-      default:
-        throw new Error("Invalid value");
+    case true:
+      return this.enable(key) as never;
+    case false:
+      return this.disable(key) as never;
+    default:
+      throw new Error('Invalid value');
     }
   }
 
@@ -110,7 +111,7 @@ export class Bits<
 
   static load<
     T extends Record<K, boolean>,
-    K extends string | number | symbol = keyof T
+    K extends number | string | symbol = keyof T
   >(data: T) {
     const keys = Reflect.ownKeys(data).sort() as Array<K>;
 
@@ -118,7 +119,7 @@ export class Bits<
 
     for (let index = 0; index < keys.length; index++) {
       const key = keys[index];
-      const value = data[key! as K];
+      const value = data[key as K];
       if (value) {
         output = output | (1 << index);
       }
@@ -129,9 +130,9 @@ export class Bits<
 
   static unload<
     T extends Record<K, boolean>,
-    K extends string | number | symbol = keyof T
+    K extends number | string | symbol = keyof T
   >(value: number, keys: Array<keyof T>) {
-    let output = {} as T;
+    const output = {} as T;
 
     for (let index = 0; index < keys.length; index++) {
       const key = keys[index];
@@ -149,4 +150,4 @@ const obj = {
 } as const;
 
 const bits = new Bits(obj);
-bits.clone().enable("b").set("a", false).data().a;
+bits.clone().enable('b').set('a', false).data().a;

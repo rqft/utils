@@ -6,4 +6,4 @@ export type Set<
   K extends keyof T,
   V
 > = Override<T, { [P in K]: V }>;
-export type Key = string | number | symbol;
+export type Key = number | string | symbol;

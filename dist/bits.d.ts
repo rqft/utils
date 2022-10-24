@@ -1,6 +1,6 @@
-import { Flood, Not, Set } from "./types";
+import type { Flood, Not, Set } from './types';
 export declare type Bit = 0 | 1;
-export declare class Bits<T extends Record<K, boolean>, K extends string | number | symbol = keyof T> {
+export declare class Bits<T extends Record<K, boolean>, K extends number | string | symbol = keyof T> {
     private static;
     private raw;
     private key;
@@ -21,6 +21,6 @@ export declare class Bits<T extends Record<K, boolean>, K extends string | numbe
     entries(): Generator<(keyof T | T[keyof T])[], void, unknown>;
     keys(): Generator<keyof T, void, unknown>;
     values(): Generator<T[keyof T], void, unknown>;
-    static load<T extends Record<K, boolean>, K extends string | number | symbol = keyof T>(data: T): number;
-    static unload<T extends Record<K, boolean>, K extends string | number | symbol = keyof T>(value: number, keys: Array<keyof T>): T;
+    static load<T extends Record<K, boolean>, K extends number | string | symbol = keyof T>(data: T): number;
+    static unload<T extends Record<K, boolean>, K extends number | string | symbol = keyof T>(value: number, keys: Array<keyof T>): T;
 }
